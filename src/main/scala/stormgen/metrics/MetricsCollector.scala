@@ -1,4 +1,4 @@
-package kafkasurge.metrics
+package stormgen.metrics
 
 trait MetricsCollector {
   def collect()

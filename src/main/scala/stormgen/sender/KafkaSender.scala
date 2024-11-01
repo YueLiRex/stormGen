@@ -1,4 +1,4 @@
-package kafkasurge.sender
+package stormgen.sender
 
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord, RecordMetadata}
 

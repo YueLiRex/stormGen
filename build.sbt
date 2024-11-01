@@ -7,10 +7,15 @@ ThisBuild / organizationName := "example"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "kafkaSurge",
+    name := "stormGen",
     libraryDependencies ++= Seq(
+      shapeless,
       kafkaClients38,
       munit % Test
+    ),
+    resolvers ++= Seq(
+      Resolver.sonatypeRepo("releases"),
+      Resolver.sonatypeRepo("snapshots")
     )
   )
 

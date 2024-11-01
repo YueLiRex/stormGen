@@ -1,4 +1,4 @@
-package kafkasurge.sender
+package stormgen.sender
 
 trait Sender {
   def send()
