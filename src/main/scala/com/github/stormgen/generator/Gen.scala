@@ -1,6 +1,4 @@
-package stormgen.generator
-
-import shapeless._
+package com.github.stormgen.generator
 
 import scala.util.Random
 

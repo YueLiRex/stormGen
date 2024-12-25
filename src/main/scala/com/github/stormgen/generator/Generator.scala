@@ -1,8 +1,8 @@
-package stormgen.generator
-
-import shapeless._
+package com.github.stormgen.generator
 
 import scala.util.Random
+
+import shapeless._
 
 object Generator {
   implicit def genericRandom[A, R](implicit gen: Generic.Aux[A, R], random: Lazy[Gen[R]]): Gen[A] = new Gen[A] {

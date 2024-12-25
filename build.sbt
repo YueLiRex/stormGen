@@ -1,22 +1,17 @@
-import Dependencies._
-
-ThisBuild / scalaVersion     := "2.13.12"
-ThisBuild / version          := "0.1.0-SNAPSHOT"
-ThisBuild / organization     := "com.example"
-ThisBuild / organizationName := "example"
+import Dependencies.*
 
 lazy val root = (project in file("."))
   .settings(
     name := "stormGen",
+    scalaVersion := "2.13.14",
+    semanticdbEnabled := true,
+    semanticdbVersion := scalafixSemanticdb.revision,
+    scalacOptions += "-Wunused:imports",
     libraryDependencies ++= Seq(
       shapeless,
-      kafkaClients38,
+      kafkaClients39,
+      pekkoActor,
       munit % Test
     ),
-    resolvers ++= Seq(
-      Resolver.sonatypeRepo("releases"),
-      Resolver.sonatypeRepo("snapshots")
-    )
+    fork := true
   )
-
-// See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
