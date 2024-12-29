@@ -7,11 +7,11 @@ import org.apache.kafka.common.serialization.Serializer
 import java.util.Properties
 
 case class KafkaConfig[K, V](
-                      bootstrapServer: String,
-                      topic: String,
-                      keySerializer: Serializer[K],
-                      valueSerializer: Serializer[V]
-                      ) {
+    bootstrapServer: String,
+    topic: String,
+    keySerializer: Serializer[K],
+    valueSerializer: Serializer[V]
+) {
   def toProperties: Properties = {
     val properties = new Properties()
     properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
@@ -26,8 +26,8 @@ case class KafkaConfig[K, V](
 object KafkaConfig {
   def apply[K, V](config: Config, keySerializer: Serializer[K], valueSerializer: Serializer[V]) = new KafkaConfig[K, V](
     bootstrapServer = config.getString("kafka.bootstrap-server"),
-    topic = config.getString("kafka.topic"),
-    keySerializer = keySerializer,
+    topic           = config.getString("kafka.topic"),
+    keySerializer   = keySerializer,
     valueSerializer = valueSerializer
   )
 }

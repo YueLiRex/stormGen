@@ -1,12 +1,13 @@
 package com.github.stormgen.kafka
 
-import com.github.stormgen.kafka.Committer.{CommitterEvent, Submit}
-import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
+import com.github.stormgen.kafka.Committer.{ CommitterEvent, Submit }
+import org.apache.kafka.clients.producer.{ KafkaProducer, ProducerRecord }
 import org.apache.pekko.actor.typed.Behavior
-import org.apache.pekko.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
+import org.apache.pekko.actor.typed.scaladsl.{ AbstractBehavior, ActorContext, Behaviors }
 
 // todo acks = all to ensure broker received message or acks = 0 to ignore the response for speed
-class Committer[K, V] private (kafkaConfig: KafkaConfig[K, V])(implicit context: ActorContext[CommitterEvent[K, V]]) extends AbstractBehavior[CommitterEvent[K, V]](context){
+class Committer[K, V] private (kafkaConfig: KafkaConfig[K, V])(implicit context: ActorContext[CommitterEvent[K, V]])
+    extends AbstractBehavior[CommitterEvent[K, V]](context) {
 
   private val kafkaProducer = new KafkaProducer[K, V](kafkaConfig.toProperties)
 
