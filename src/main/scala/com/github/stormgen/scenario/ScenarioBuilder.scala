@@ -13,7 +13,7 @@ case class ScenarioBuilder[K, V] private (
     name: String,
     steps: Queue[Step],
     bootstrapServers: String,
-    topics: String,
+    topic: String,
     keySerializer: Serializer[K],
     valueSerializer: Serializer[V]
 )(implicit keyGen: Gen[K], valueGen: Gen[V]) {
@@ -27,7 +27,7 @@ case class ScenarioBuilder[K, V] private (
   def bootstrapServers(servers: String): ScenarioBuilder[K, V] =
     copy(bootstrapServers = servers)
 
-  def topics(topics: String): ScenarioBuilder[K, V] = copy(topics = topics)
+  def topic(topic: String): ScenarioBuilder[K, V] = copy(topic = topic)
 
   def keySerializer(serializer: Serializer[K]): ScenarioBuilder[K, V] = copy(keySerializer = serializer)
 
@@ -36,7 +36,7 @@ case class ScenarioBuilder[K, V] private (
   def build: Behavior[Scenario.ScenarioEvent] = {
     val kafkaConfig = KafkaConfig(
       bootstrapServer = bootstrapServers,
-      topic           = topics,
+      topic           = topic,
       keySerializer   = keySerializer,
       valueSerializer = valueSerializer
     )
