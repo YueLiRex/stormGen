@@ -7,6 +7,4 @@ object Dependencies {
   lazy val kafkaClients39 = "org.apache.kafka" % "kafka-clients" % "3.9.0"
   lazy val shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
   lazy val pekkoActor = "org.apache.pekko" %% "pekko-actor-typed" % pekkoVersion
-  lazy val pekkoKafkaConnector = "org.apache.pekko" %% "pekko-connectors-kafka" % pekkoVersion
-  lazy val pekkoStream = "org.apache.pekko" %% "pekko-stream" % pekkoVersion
 }
