@@ -1,20 +1,22 @@
 package com.github.stormgen.scenario
 
+import com.github.stormgen.generator.Gen
+
 import scala.collection.immutable.Queue
 import scala.concurrent.duration.FiniteDuration
 import scala.util.Random
-
-import com.github.stormgen.kafka.EmptySerializer
+import com.github.stormgen.kafka.{ EmptySerializer, KafkaConfig }
 import org.apache.kafka.common.serialization.Serializer
+import org.apache.pekko.actor.typed.Behavior
 
-case class ScenarioBuilder[K, V] private(
-                                    name: String = Random.alphanumeric.take(6).mkString,
-                                    steps: Queue[Step] = Queue.empty,
-                                    bootstrapServers: String = "",
-                                    topics: String = "",
-                                    keySerializer: Serializer[K] = new EmptySerializer[K],
-                                    valueSerializer: Serializer[V] = new EmptySerializer[V]
-                                  ) {
+case class ScenarioBuilder[K, V] private (
+    name: String,
+    steps: Queue[Step],
+    bootstrapServers: String,
+    topics: String,
+    keySerializer: Serializer[K],
+    valueSerializer: Serializer[V]
+)(implicit keyGen: Gen[K], valueGen: Gen[V]) {
   def name(name: String): ScenarioBuilder[K, V] = copy(name = name)
 
   def send(ratePerSecond: Int, duration: FiniteDuration): ScenarioBuilder[K, V] = {
@@ -30,4 +32,32 @@ case class ScenarioBuilder[K, V] private(
   def keySerializer(serializer: Serializer[K]): ScenarioBuilder[K, V] = copy(keySerializer = serializer)
 
   def valueSerializer(serializer: Serializer[V]): ScenarioBuilder[K, V] = copy(valueSerializer = serializer)
+
+  def build: Behavior[Scenario.ScenarioEvent] = {
+    val kafkaConfig = KafkaConfig(
+      bootstrapServer = bootstrapServers,
+      topic           = topics,
+      keySerializer   = keySerializer,
+      valueSerializer = valueSerializer
+    )
+    Scenario(steps = steps, kafkaConfig = kafkaConfig)
+  }
+}
+
+object ScenarioBuilder {
+  def apply[K, V](
+      name: String                   = Random.alphanumeric.take(6).mkString,
+      steps: Queue[Step]             = Queue.empty,
+      bootstrapServers: String       = "",
+      topics: String                 = "",
+      keySerializer: Serializer[K]   = new EmptySerializer[K],
+      valueSerializer: Serializer[V] = new EmptySerializer[V]
+  )(implicit keyGen: Gen[K], valueGen: Gen[V]): ScenarioBuilder[K, V] = new ScenarioBuilder[K, V](
+    name,
+    steps,
+    bootstrapServers,
+    topics,
+    keySerializer,
+    valueSerializer
+  )
 }

@@ -16,15 +16,15 @@ object JobQueue {
   case object NextStep extends JobQueueEvent
 
   def apply(
-    steps: Queue[Step],
-    jobExecutorRef: ActorRef[JobExecutorEvent],
-    scenarioRef: ActorRef[ScenarioEvent]
+      steps: Queue[Step],
+      jobExecutorRef: ActorRef[JobExecutorEvent],
+      scenarioRef: ActorRef[ScenarioEvent]
   ): Behavior[JobQueueEvent] = state(steps, jobExecutorRef, scenarioRef)
 
   private def state(
-    steps: Queue[Step],
-    jobExecutorRef: ActorRef[JobExecutorEvent],
-    scenarioRef: ActorRef[ScenarioEvent]
+      steps: Queue[Step],
+      jobExecutorRef: ActorRef[JobExecutorEvent],
+      scenarioRef: ActorRef[ScenarioEvent]
   ): Behavior[JobQueueEvent] = Behaviors.setup { context =>
     val (step, queue) = steps.dequeue
     context.self ! RunJob(step)
