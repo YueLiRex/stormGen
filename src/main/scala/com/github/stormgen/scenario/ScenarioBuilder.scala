@@ -1,11 +1,12 @@
 package com.github.stormgen.scenario
 
-import com.github.stormgen.generator.Gen
-
 import scala.collection.immutable.Queue
 import scala.concurrent.duration.FiniteDuration
 import scala.util.Random
-import com.github.stormgen.kafka.{ EmptySerializer, KafkaConfig }
+
+import com.github.stormgen.generator.Gen
+import com.github.stormgen.kafka.EmptySerializer
+import com.github.stormgen.kafka.KafkaConfig
 import org.apache.kafka.common.serialization.Serializer
 import org.apache.pekko.actor.typed.Behavior
 

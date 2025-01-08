@@ -1,20 +1,18 @@
 package com.github.stormgen.scenario
 
-import com.github.stormgen.generator.{ Gen, Generator }
-import com.github.stormgen.kafka.Committer.{ CommitterEvent, Submit }
-import com.github.stormgen.kafka.KafkaConfig
-
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.duration.FiniteDuration
+
+import com.github.stormgen.generator.Gen
+import com.github.stormgen.generator.Generator
+import com.github.stormgen.kafka.Committer.CommitterEvent
+import com.github.stormgen.kafka.Committer.Submit
 import com.github.stormgen.scenario.Scenario.JobFinished
 import com.github.stormgen.scenario.Scenario.ScenarioEvent
-import org.apache.kafka.clients.producer.{ KafkaProducer, Producer, ProducerRecord }
-import org.apache.kafka.common.serialization.Serializer
+import com.github.stormgen.scenario.Scenario.UpdateSentCounter
 import org.apache.pekko.actor.typed.ActorRef
 import org.apache.pekko.actor.typed.Behavior
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
-
-import java.util.Properties
 
 object JobExecutor {
   sealed trait JobExecutorEvent
@@ -39,6 +37,7 @@ object JobExecutor {
           (key, value)
         }
         committerRef ! Submit(messages)
+        scenarioRef ! UpdateSentCounter(number)
         Behaviors.same
 
       case Stop =>

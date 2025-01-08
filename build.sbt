@@ -11,6 +11,8 @@ lazy val root = (project in file("."))
       shapeless,
       kafkaClients39,
       pekkoActor,
+      circeCore,
+
       munit % Test
     ),
     fork := true

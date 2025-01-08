@@ -1,13 +1,15 @@
 package com.github.stormgen.scenario
 
-import com.github.stormgen.generator.Gen
-import com.github.stormgen.kafka.{ Committer, KafkaConfig }
-
 import scala.collection.immutable.Queue
+import scala.concurrent.duration.DurationInt
+
+import com.github.stormgen.collector.MetricsCollector
+import com.github.stormgen.generator.Gen
+import com.github.stormgen.kafka.Committer
+import com.github.stormgen.kafka.KafkaConfig
 import com.github.stormgen.scenario.JobQueue.NextStep
 import org.apache.pekko.actor.typed.Behavior
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
-import org.apache.kafka.common.serialization.Serializer
 
 object Scenario {
   sealed trait ScenarioEvent
@@ -16,26 +18,44 @@ object Scenario {
 
   case object ScenarioFinished extends ScenarioEvent
 
+  case class UpdateSentCounter(number: Int) extends ScenarioEvent
+
+  private case object ReportMetrics extends ScenarioEvent
+
   def apply[K, V](
       steps: Queue[Step],
       kafkaConfig: KafkaConfig[K, V]
-  )(implicit keyGen: Gen[K], valueGen: Gen[V]): Behavior[ScenarioEvent] = Behaviors.setup { context =>
-    val committerRef   = context.spawn(Committer(kafkaConfig), "committer")
-    val jobExecutorRef = context.spawn(JobExecutor[K, V](context.self, committerRef), "job-executor")
-    val jobQueueRef =
-      context.spawn(JobQueue(steps = steps, jobExecutorRef = jobExecutorRef, scenarioRef = context.self), "job-queue")
+  )(implicit keyGen: Gen[K], valueGen: Gen[V]): Behavior[ScenarioEvent] =
+    Behaviors.setup { context =>
+      Behaviors.withTimers { timer =>
+        timer.startTimerAtFixedRate(ReportMetrics, 3.seconds)
 
-    Behaviors.receiveMessage {
-      case JobFinished =>
-        jobQueueRef ! NextStep
-        Behaviors.same
+        val metricsCollector = new MetricsCollector
 
-      case ScenarioFinished =>
-        context.stop(jobQueueRef)
-        context.stop(jobExecutorRef)
-        context.stop(committerRef)
-        Behaviors.stopped(() => println("scenario stopped"))
+        val committerRef   = context.spawn(Committer(kafkaConfig), "committer")
+        val jobExecutorRef = context.spawn(JobExecutor[K, V](context.self, committerRef), "job-executor")
+        val jobQueueRef =
+          context.spawn(JobQueue(steps = steps, jobExecutorRef = jobExecutorRef, scenarioRef = context.self), "job-queue")
+
+        Behaviors.receiveMessage {
+          case ReportMetrics =>
+            println(metricsCollector.report)
+            Behaviors.same
+
+          case UpdateSentCounter(number) =>
+            metricsCollector.updateProducerSentMessageCounter(number)
+            Behaviors.same
+
+          case JobFinished =>
+            jobQueueRef ! NextStep
+            Behaviors.same
+
+          case ScenarioFinished =>
+            context.stop(jobQueueRef)
+            context.stop(jobExecutorRef)
+            context.stop(committerRef)
+            Behaviors.stopped(() => println("scenario stopped"))
+        }
+      }
     }
-  }
-
 }

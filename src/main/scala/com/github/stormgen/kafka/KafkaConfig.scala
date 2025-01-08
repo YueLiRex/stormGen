@@ -1,10 +1,10 @@
 package com.github.stormgen.kafka
 
+import java.util.Properties
+
 import com.typesafe.config.Config
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.Serializer
-
-import java.util.Properties
 
 case class KafkaConfig[K, V](
     bootstrapServer: String,
