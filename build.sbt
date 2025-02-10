@@ -12,6 +12,11 @@ lazy val root = (project in file("."))
       kafkaClients39,
       pekkoActor,
       circeCore,
+      ce,
+      cek,
+      cestd,
+      betterModadicFor,
+      ceTest,
 
       munit % Test
     ),

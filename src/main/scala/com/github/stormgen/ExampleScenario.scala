@@ -1,16 +1,13 @@
 package com.github.stormgen
 
+import cats.effect.{ExitCode, IO}
+import com.github.stormgen.scenario.{Scenario, ScenarioApp}
+import org.apache.kafka.common.serialization.{Serializer, StringSerializer}
+
 import scala.concurrent.duration.DurationInt
 
-import com.github.stormgen.generator.Generator._
-import com.github.stormgen.kafka.KafkaConfig
-import com.github.stormgen.scenario.ScenarioBuilder
-import com.github.stormgen.scenario.ScenarioRunner
-import org.apache.kafka.common.serialization.Serializer
-import org.apache.kafka.common.serialization.StringSerializer
 
-object ExampleScenario extends ScenarioRunner {
-
+object ExampleScenario extends ScenarioApp {
   case class School(name: String, address: String)
   case class Test(name: String, age: Int, adult: Boolean, hobbies: Seq[String], historySchool: Seq[School])
 
@@ -18,15 +15,19 @@ object ExampleScenario extends ScenarioRunner {
     override def serialize(topic: String, data: Test): Array[Byte] = data.toString.getBytes
   }
 
-  ScenarioBuilder[String, Test]()
-    .name("test-scenario")
-    .bootstrapServers("localhost:9092")
-    .topic("test")
-    .keySerializer(new StringSerializer)
-    .valueSerializer(testSerializer)
-    .send(2, 3.seconds)
-    .send(3, 5.seconds)
-    .send(5, 10.seconds)
-    .build
-    .run
+  override def run(args: List[String]): IO[ExitCode] = {
+    scenario
+      .name("scenario with cats effect")
+      .withBroker[String, Test](
+        bootstrapServers = List("localhost:9092"),
+        topic = "test-topic",
+        keySerializer = new StringSerializer,
+        valueSerializer = testSerializer
+      )
+      .withNumberOfProducer(1)
+      .step(10, 3.seconds)
+      .step(3, 5.seconds)
+      .start().map(_ => ExitCode.Success)
+
+  }
 }

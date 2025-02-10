@@ -21,6 +21,3 @@ class Counter(val name: String) extends Metrics[Int] {
 
   def +(number: Int): Int = counter.addAndGet(number)
 }
-
-
-

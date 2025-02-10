@@ -1,11 +1,20 @@
 package com.github.stormgen.scenario
 
-import com.github.stormgen.scenario.Scenario.ScenarioEvent
-import org.apache.pekko.actor.typed.ActorSystem
-import org.apache.pekko.actor.typed.Behavior
+import cats.effect.IO
+import org.apache.kafka.clients.producer.KafkaProducer
 
-trait ScenarioRunner extends App {
-  implicit class Runner(scenarioBehavior: Behavior[ScenarioEvent]) {
-    def run: ActorSystem[ScenarioEvent] = ActorSystem(scenarioBehavior, "scenario-runner")
+import java.util.Properties
+import java.util.concurrent.Executors
+import scala.concurrent.duration.DurationInt
+
+abstract class ScenarioRunner[K, V] { self: Scenario =>
+
+  val props = new Properties()
+  val producer = new KafkaProducer[K, V](props)
+
+  val scheduler = Executors.newScheduledThreadPool(1)
+
+  def start() = {
+    scheduler.scheduleAtFixedRate()
   }
 }

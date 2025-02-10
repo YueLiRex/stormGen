@@ -12,4 +12,10 @@ object Dependencies {
   lazy val circeCore = "io.circe" %% "circe-core" % circeVersion
   lazy val circeGeneric = "io.circe" %% "circe-generic" % circeVersion
   lazy val circeParser = "io.circe" %% "circe-parser" % circeVersion
+
+  val ce = "org.typelevel" %% "cats-effect" % "3.5.3"
+  val cek = "org.typelevel" %% "cats-effect-kernel" % "3.5.3"
+  val cestd = "org.typelevel" %% "cats-effect-std" % "3.5.3"
+  val betterModadicFor = compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
+  val ceTest = "org.typelevel" %% "munit-cats-effect" % "2.0.0" % Test
 }
