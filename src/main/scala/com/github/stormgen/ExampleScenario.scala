@@ -11,7 +11,7 @@ object ExampleScenario extends ScenarioApp {
     .name("test-scenario")
     .withBroker(Kafka(bootstrapServers = Seq("server1", "server2"), topics = Seq("topic1, topic2")))
     .withSteps(Chain.empty)
-    .evaluate
+    .build
 
   override def run(args: List[String]): IO[ExitCode] = {
     println(scenarioSettings)

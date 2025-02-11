@@ -1,3 +1,5 @@
 package com.github.stormgen.scenario
 
-case class Step()
+import scala.concurrent.duration.FiniteDuration
+
+case class Step(rate: Int, duration: FiniteDuration)
