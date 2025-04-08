@@ -6,11 +6,10 @@ lazy val root = (project in file("."))
     scalaVersion := "2.13.14",
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision,
-    scalacOptions += "-Wunused:imports",
+    scalacOptions ++= Seq("-Wunused:imports", "-Dcats.effect.warnOnNonMainThreadDetected=false"),
     libraryDependencies ++= Seq(
       shapeless,
       kafkaClients39,
-      pekkoActor,
       circeCore,
       ce,
       cek,
@@ -20,5 +19,5 @@ lazy val root = (project in file("."))
 
       munit % Test
     ),
-    fork := true
+    Compile / run / fork := true
   )
