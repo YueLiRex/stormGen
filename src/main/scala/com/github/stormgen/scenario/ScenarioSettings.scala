@@ -13,7 +13,7 @@ sealed abstract class ScenarioSettings[K, V] {
 
   def phases: Seq[Phase]
 
-  def compile()(implicit kGen: Gen[K], vGen: Gen[V]): Scenario[K, V]
+  def compile(implicit kGen: Gen[K], vGen: Gen[V]): Scenario[K, V]
 
   def withBootstrapServers(servers: String): ScenarioSettings[K, V]
   def withTopic(topic: String): ScenarioSettings[K, V]
@@ -28,7 +28,7 @@ object ScenarioSettings {
       keySerializer: KeySerializer[IO, K],
       valueSerializer: ValueSerializer[IO, V]) extends ScenarioSettings[K, V] { self =>
 
-    override def compile()(implicit kGen: Gen[K], vGen: Gen[V]): Scenario[K, V] = {
+    override def compile(implicit kGen: Gen[K], vGen: Gen[V]): Scenario[K, V] = {
       new Scenario(self)
     }
 

@@ -20,7 +20,7 @@ object Main extends IOApp {
       .withTopic("test")
       .withPhase(Phase(10.seconds, Rate(3, 1.second)))
       .withPhase(Phase(5.seconds, Rate(2, 1.second)))
-      .compile()
+      .compile
       .run.as(ExitCode.Success)
   }
 }
