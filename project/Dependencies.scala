@@ -5,6 +5,7 @@ object Dependencies {
   lazy val catsEffectVersion = "3.6.0"
   lazy val http4sVersion = "0.23.30"
 
+  lazy val typeSafeConfig = "com.typesafe" % "config" % "1.4.3"
   lazy val kafkaClients39 = "org.apache.kafka" % "kafka-clients" % "3.9.0"
   lazy val shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
 

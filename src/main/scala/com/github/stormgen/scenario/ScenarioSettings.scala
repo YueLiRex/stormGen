@@ -18,6 +18,7 @@ sealed abstract class ScenarioSettings[K, V] {
   def withBootstrapServers(servers: String): ScenarioSettings[K, V]
   def withTopic(topic: String): ScenarioSettings[K, V]
   def withPhase(phase: Phase): ScenarioSettings[K, V]
+  def withPhases(phases: Seq[Phase]): ScenarioSettings[K, V]
 }
 
 object ScenarioSettings {
@@ -37,6 +38,8 @@ object ScenarioSettings {
     override def withTopic(topic: String): ScenarioSettings[K, V] = this.copy(topic = topic)
 
     override def withPhase(phase: Phase): ScenarioSettings[K, V] = this.copy(phases = phases :+ phase)
+
+    override def withPhases(phases: Seq[Phase]): ScenarioSettings[K, V] = this.copy(phases = phases :++ phases)
   }
 
   def create[K, V](

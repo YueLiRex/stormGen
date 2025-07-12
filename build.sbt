@@ -8,6 +8,7 @@ lazy val root = (project in file("."))
     semanticdbVersion := scalafixSemanticdb.revision,
     scalacOptions ++= Seq("-Wunused:imports", "-Dcats.effect.warnOnNonMainThreadDetected=false"),
     libraryDependencies ++= Seq(
+      typeSafeConfig,
       shapeless,
       fs2Kafka,
       betterModadicFor,
