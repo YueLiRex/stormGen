@@ -1,15 +1,23 @@
 package com.github.stormgen.metrics
 
-import cats.effect.IO
-import cats.effect.std.MapRef
+import com.github.stormgen.metrics.Datas.{Data, Empty}
+import com.github.stormgen.metrics.Keys.Key
 
 import java.util.concurrent.ConcurrentHashMap
 import scala.jdk.CollectionConverters._
 
+
 class MetricsStore {
-  private val store = new ConcurrentHashMap[Long, Int]()
+  private val store = new ConcurrentHashMap[Key, Data]()
 
-  def updateSentMessage(timestamp: Long, number: Int): IO[Unit] = IO(store.put(timestamp, number))
+  def update(key: Key, data: Data): Data = {
+    val newData = store.getOrDefault(key, Empty) + data
+    store.put(key, newData)
+  }
 
-  def showReport: IO[Unit] = IO(store.asScala.foreach(println))
+  def get(key: Key) = Option(store.get(key))
+}
+
+object MetricsStore {
+  def apply() = new MetricsStore()
 }

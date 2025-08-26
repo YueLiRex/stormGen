@@ -1,8 +1,8 @@
 package com.github.stormgen.scenario
 
-import fs2.kafka.{KafkaSerializer, KeySerializer, ValueSerializer}
+import fs2.kafka.KafkaSerializer
 
-import scala.concurrent.duration.{DurationInt, FiniteDuration}
+import scala.concurrent.duration._
 import scala.util.Random
 
 object BuildInScenario {
@@ -60,7 +60,7 @@ object BuildInScenario {
 
   def breakpointTest[K, V](keySerializer: KafkaSerializer[K], valueSerializer: KafkaSerializer[V], bootstrapServer: String, topic: String, stepDuration: FiniteDuration, stepNumber: Int, totalDuration: FiniteDuration): ScenarioSettings[K, V] = {
     val numberOfRound = totalDuration.toSeconds / stepDuration.toSeconds
-    val phases: Seq[Phase] = (1 to numberOfRound).foldLeft(Seq.empty[Phase]) { (phases, _) =>
+    val phases: Seq[Phase] = (1L to numberOfRound).foldLeft(Seq.empty[Phase]) { (phases, _) =>
       val previousPhaseNumber = phases.lastOption.map(_.rate.number).getOrElse(0)
       val nextPhase = Phase(stepDuration, Rate(previousPhaseNumber + stepNumber, 1.second))
       phases :+ nextPhase
