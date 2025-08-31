@@ -39,7 +39,7 @@ object ScenarioSettings {
 
     override def withPhase(phase: Phase): ScenarioSettings[K, V] = this.copy(phases = phases :+ phase)
 
-    override def withPhases(phases: Seq[Phase]): ScenarioSettings[K, V] = this.copy(phases = phases :++ phases)
+    override def withPhases(phases: Seq[Phase]): ScenarioSettings[K, V] = this.copy(phases = this.phases :++ phases)
   }
 
   def create[K, V](

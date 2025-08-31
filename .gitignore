@@ -1,3 +1,6 @@
 /.bsp/
 target/
 .idea
+.vscode/
+.metals/
+.DS_Store
