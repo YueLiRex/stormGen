@@ -1,6 +1,5 @@
 package com.github.stormgen.metrics
 
-import com.github.stormgen.metrics.Datas.{Empty, SentMessage}
 import munit.FunSuite
 
 class DatasSuite extends FunSuite {

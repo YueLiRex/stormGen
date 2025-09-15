@@ -14,10 +14,10 @@ lazy val root = (project in file("."))
       betterModadicFor,
       http4sServer,
       http4sDsl,
+      ce,
 
-      ceTest,
+      munit,
       ceMunitTest,
-      munit
     ),
     Compile / run / fork := true
   ).enablePlugins(JavaAppPackaging)

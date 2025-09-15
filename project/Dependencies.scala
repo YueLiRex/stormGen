@@ -19,10 +19,10 @@ object Dependencies {
   lazy val http4sServer = "org.http4s" %% "http4s-ember-server" % http4sVersion
   lazy val http4sDsl = "org.http4s" %% "http4s-dsl"          % http4sVersion
   lazy val decline = "com.monovore" %% "decline-effect" % "2.5.0"
+  lazy val ce = "org.typelevel" %% "cats-effect-std" % catsEffectVersion
 
-  lazy val ceTest = "org.typelevel" %% "cats-effect-std" % catsEffectVersion % Test
-  lazy val ceMunitTest = "org.typelevel" %% "munit-cats-effect" % "2.1.0" % Test
   lazy val munit = "org.scalameta" %% "munit" % "1.1.1" % Test
+  lazy val ceMunitTest = "org.typelevel" %% "munit-cats-effect" % "2.1.0" % Test
 
   lazy val testContainersScala = "com.dimafeng" %% "testcontainers-scala-munit" % testcontainersVersion % Test
   lazy val testContainerScalaKafka= "com.dimafeng" %% "testcontainers-scala-kafka" % testcontainersVersion % Test

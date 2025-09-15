@@ -10,10 +10,13 @@ import fs2.kafka.ProducerSettings
 
 object MessageSender {
   def apply[K, V](topic: String, producerSettings: ProducerSettings[IO, K, V]): Pipe[IO, Seq[(K, V)], ProducerResult[K, V]] =
-    inputStream => inputStream.map { messages =>
-      val records = messages.map { case (key, value) =>
-        ProducerRecord(topic, key, value)
-      }
-      Chunk.from(records)
-    }.through(KafkaProducer.pipe(producerSettings))
+    inputStream =>
+      inputStream
+        .map { messages =>
+          val records = messages.map { case (key, value) =>
+            ProducerRecord(topic, key, value)
+          }
+          Chunk.from(records)
+        }
+        .through(KafkaProducer.pipe(producerSettings))
 }

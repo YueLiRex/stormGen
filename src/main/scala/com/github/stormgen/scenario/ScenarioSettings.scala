@@ -27,11 +27,11 @@ object ScenarioSettings {
       bootstrapServers: String,
       topic: String,
       keySerializer: KeySerializer[IO, K],
-      valueSerializer: ValueSerializer[IO, V]) extends ScenarioSettings[K, V] { self =>
+      valueSerializer: ValueSerializer[IO, V]
+  ) extends ScenarioSettings[K, V] { self =>
 
-    override def compile(implicit kGen: Gen[K], vGen: Gen[V]): Scenario[K, V] = {
+    override def compile(implicit kGen: Gen[K], vGen: Gen[V]): Scenario[K, V] =
       new Scenario(self)
-    }
 
     override def withBootstrapServers(servers: String): ScenarioSettings[K, V] = this.copy(bootstrapServers = servers)
 
@@ -43,10 +43,15 @@ object ScenarioSettings {
   }
 
   def create[K, V](
-                   keySerializer: KafkaSerializer[K],
-                   valueSerializer: KafkaSerializer[V]
-                 ): ScenarioSettings[K, V] = {
-    ScenarioSettingsImpl[K, V](Seq.empty, "null", "null", Serializer.delegate(keySerializer), Serializer.delegate(valueSerializer))
-  }
+      keySerializer: KafkaSerializer[K],
+      valueSerializer: KafkaSerializer[V]
+  ): ScenarioSettings[K, V] =
+    ScenarioSettingsImpl[K, V](
+      Seq.empty,
+      "null",
+      "null",
+      Serializer.delegate(keySerializer),
+      Serializer.delegate(valueSerializer)
+    )
 
 }

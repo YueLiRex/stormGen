@@ -14,7 +14,7 @@ class GeneratorSuite extends FunSuite {
 
   test("Generator.oneOf returns one of the provided options") {
     val options = Seq("a", "b", "c")
-    val result = Generator.oneOf(options: _*)
+    val result  = Generator.oneOf(options: _*)
     assert(options.contains(result))
   }
 
