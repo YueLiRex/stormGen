@@ -16,7 +16,7 @@ object BuildInScenario {
     val duration = Random.between(10, 30)
 
     ScenarioSettings
-      .create(keySerializer, valueSerializer)
+      .empty(keySerializer, valueSerializer)
       .withBootstrapServers(bootstrapServer)
       .withTopic(topic)
       .withPhase(Phase(duration.minutes, Rate(numberPerSecond, perDuration = 1.second)))
@@ -32,7 +32,7 @@ object BuildInScenario {
     val duration = Random.between(10, 20)
 
     ScenarioSettings
-      .create(keySerializer, valueSerializer)
+      .empty(keySerializer, valueSerializer)
       .withBootstrapServers(bootstrapServer)
       .withTopic(topic)
       .withPhase(Phase(duration.minutes, Rate(numberPerSecond, perDuration = 1.second)))
@@ -48,7 +48,7 @@ object BuildInScenario {
     val duration = Random.between(60, 90)
 
     ScenarioSettings
-      .create(keySerializer, valueSerializer)
+      .empty(keySerializer, valueSerializer)
       .withBootstrapServers(bootstrapServer)
       .withTopic(topic)
       .withPhase(Phase(duration.minutes, Rate(numberPerSecond, 1.second)))
@@ -64,7 +64,7 @@ object BuildInScenario {
     val duration = Random.between(10, 20)
 
     ScenarioSettings
-      .create(keySerializer, valueSerializer)
+      .empty(keySerializer, valueSerializer)
       .withBootstrapServers(bootstrapServer)
       .withTopic(topic)
       .withPhase(Phase(duration.minutes, Rate(numberPerSecond, perDuration = 1.second)))
@@ -82,7 +82,7 @@ object BuildInScenario {
     val highDuration = Random.between(30, 60)
 
     ScenarioSettings
-      .create(keySerializer, valueSerializer)
+      .empty(keySerializer, valueSerializer)
       .withBootstrapServers(bootstrapServer)
       .withTopic(topic)
       .withPhase(Phase(lowDuration.seconds, Rate(lowLoadNumberPerSecond, 1.second)))
@@ -106,7 +106,7 @@ object BuildInScenario {
     }
 
     ScenarioSettings
-      .create(keySerializer, valueSerializer)
+      .empty(keySerializer, valueSerializer)
       .withBootstrapServers(bootstrapServer)
       .withTopic(topic)
       .withPhases(phases)

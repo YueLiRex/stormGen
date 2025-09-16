@@ -2,6 +2,7 @@ package com.github.stormgen.scenario
 
 import cats.effect._
 import com.github.stormgen.generator.Gen
+import com.typesafe.config.Config
 import fs2.kafka._
 
 sealed abstract class ScenarioSettings[K, V] {
@@ -10,7 +11,6 @@ sealed abstract class ScenarioSettings[K, V] {
 
   def bootstrapServers: String
   def topic: String
-
   def phases: Seq[Phase]
 
   def compile(implicit kGen: Gen[K], vGen: Gen[V]): Scenario[K, V]
@@ -42,7 +42,7 @@ object ScenarioSettings {
     override def withPhases(phases: Seq[Phase]): ScenarioSettings[K, V] = this.copy(phases = this.phases :++ phases)
   }
 
-  def create[K, V](
+  def empty[K, V](
       keySerializer: KafkaSerializer[K],
       valueSerializer: KafkaSerializer[V]
   ): ScenarioSettings[K, V] =
@@ -53,5 +53,4 @@ object ScenarioSettings {
       Serializer.delegate(keySerializer),
       Serializer.delegate(valueSerializer)
     )
-
 }

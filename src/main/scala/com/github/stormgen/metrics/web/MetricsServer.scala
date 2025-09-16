@@ -1,7 +1,6 @@
-package com.github.stormgen.metrics
+package com.github.stormgen.metrics.web
 
-import cats.effect.IO
-import cats.effect.Resource
+import cats.effect.{ IO, Resource }
 import com.comcast.ip4s._
 import org.http4s.ember.server._
 import org.http4s.server.Server
