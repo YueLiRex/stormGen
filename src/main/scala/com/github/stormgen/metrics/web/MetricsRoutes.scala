@@ -1,7 +1,11 @@
 package com.github.stormgen.metrics.web
 
 import cats.effect.IO
-import org.http4s.{ HttpApp, HttpRoutes, Response, StaticFile, Status }
+import org.http4s.HttpApp
+import org.http4s.HttpRoutes
+import org.http4s.Response
+import org.http4s.StaticFile
+import org.http4s.Status
 import org.http4s.dsl.io._
 
 class MetricsRoutes() {

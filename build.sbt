@@ -15,13 +15,15 @@ lazy val root = (project in file("."))
       http4sServer,
       http4sDsl,
       ce,
+      awsGlueRegistry,
+//      pureConfig,
 
-      munit,
-      ceMunitTest,
+      munit % Test,
+      ceMunitTest % Test
     ),
     Compile / run / fork := true
-  ).enablePlugins(JavaAppPackaging)
-
+  )
+  .enablePlugins(JavaAppPackaging)
 
 lazy val itTest = (project in file("./it-test"))
   .settings(

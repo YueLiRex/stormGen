@@ -3,16 +3,17 @@ package com.github.stormgen.scenario
 import scala.concurrent.duration._
 import scala.util.Random
 
+import cats.effect.Async
 import fs2.kafka.KafkaSerializer
 
 object BuildInScenario {
-  def smokeTest[K, V](
+  def smokeTest[F[_]: Async, K, V](
       keySerializer: KafkaSerializer[K],
       valueSerializer: KafkaSerializer[V],
       bootstrapServer: String,
       topic: String,
       numberPerSecond: Int
-  ): ScenarioSettings[K, V] = {
+  ): ScenarioSettings[F, K, V] = {
     val duration = Random.between(10, 30)
 
     ScenarioSettings
@@ -22,13 +23,13 @@ object BuildInScenario {
       .withPhase(Phase(duration.minutes, Rate(numberPerSecond, perDuration = 1.second)))
   }
 
-  def averageLoadTest[K, V](
+  def averageLoadTest[F[_]: Async, K, V](
       keySerializer: KafkaSerializer[K],
       valueSerializer: KafkaSerializer[V],
       bootstrapServer: String,
       topic: String,
       numberPerSecond: Int
-  ): ScenarioSettings[K, V] = {
+  ): ScenarioSettings[F, K, V] = {
     val duration = Random.between(10, 20)
 
     ScenarioSettings
@@ -38,13 +39,13 @@ object BuildInScenario {
       .withPhase(Phase(duration.minutes, Rate(numberPerSecond, perDuration = 1.second)))
   }
 
-  def soakTest[K, V](
+  def soakTest[F[_]: Async, K, V](
       keySerializer: KafkaSerializer[K],
       valueSerializer: KafkaSerializer[V],
       bootstrapServer: String,
       topic: String,
       numberPerSecond: Int
-  ): ScenarioSettings[K, V] = {
+  ): ScenarioSettings[F, K, V] = {
     val duration = Random.between(60, 90)
 
     ScenarioSettings
@@ -54,13 +55,13 @@ object BuildInScenario {
       .withPhase(Phase(duration.minutes, Rate(numberPerSecond, 1.second)))
   }
 
-  def stressTest[K, V](
+  def stressTest[F[_]: Async, K, V](
       keySerializer: KafkaSerializer[K],
       valueSerializer: KafkaSerializer[V],
       bootstrapServer: String,
       topic: String,
       numberPerSecond: Int
-  ): ScenarioSettings[K, V] = {
+  ): ScenarioSettings[F, K, V] = {
     val duration = Random.between(10, 20)
 
     ScenarioSettings
@@ -70,14 +71,14 @@ object BuildInScenario {
       .withPhase(Phase(duration.minutes, Rate(numberPerSecond, perDuration = 1.second)))
   }
 
-  def spikeTest[K, V](
+  def spikeTest[F[_]: Async, K, V](
       keySerializer: KafkaSerializer[K],
       valueSerializer: KafkaSerializer[V],
       bootstrapServer: String,
       topic: String,
       lowLoadNumberPerSecond: Int,
       highLoadNumberPerSecond: Int
-  ): ScenarioSettings[K, V] = {
+  ): ScenarioSettings[F, K, V] = {
     val lowDuration  = Random.between(30, 90)
     val highDuration = Random.between(30, 60)
 
@@ -89,7 +90,7 @@ object BuildInScenario {
       .withPhase(Phase(highDuration.seconds, Rate(highLoadNumberPerSecond, 1.second)))
   }
 
-  def breakpointTest[K, V](
+  def breakpointTest[F[_]: Async, K, V](
       keySerializer: KafkaSerializer[K],
       valueSerializer: KafkaSerializer[V],
       bootstrapServer: String,
@@ -97,7 +98,7 @@ object BuildInScenario {
       stepDuration: FiniteDuration,
       stepNumber: Int,
       totalDuration: FiniteDuration
-  ): ScenarioSettings[K, V] = {
+  ): ScenarioSettings[F, K, V] = {
     val numberOfRound = totalDuration.toSeconds / stepDuration.toSeconds
     val phases: Seq[Phase] = (1L to numberOfRound).foldLeft(Seq.empty[Phase]) { (phases, _) =>
       val previousPhaseNumber = phases.lastOption.map(_.rate.number).getOrElse(0)

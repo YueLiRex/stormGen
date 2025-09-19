@@ -1,4 +1,4 @@
-package com.github.stormgen.reporter
+package com.github.stormgen.metrics
 
 import scala.concurrent.duration.FiniteDuration
 
