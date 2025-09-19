@@ -2,6 +2,7 @@ package com.github.stormgen.scenario
 
 import scala.concurrent.duration.DurationInt
 
+import cats.effect.IO
 import fs2.kafka._
 import munit.FunSuite
 import org.apache.kafka.common.serialization.IntegerSerializer
@@ -13,7 +14,7 @@ class ScenarioSettingsSuite extends FunSuite {
   val dummyValueSerializer: KafkaSerializer[Integer] = new IntegerSerializer
 
   test("ScenarioSettings.create initializes with defaults") {
-    val settings = ScenarioSettings.empty(dummyKeySerializer, dummyValueSerializer)
+    val settings = ScenarioSettings.empty[IO, String, Integer](dummyKeySerializer, dummyValueSerializer)
     assertEquals(settings.bootstrapServers, "null")
     assertEquals(settings.topic, "null")
     assertEquals(settings.phases, Seq.empty)
@@ -21,14 +22,14 @@ class ScenarioSettingsSuite extends FunSuite {
 
   test("withBootstrapServers updates bootstrapServers") {
     val settings = ScenarioSettings
-      .empty(dummyKeySerializer, dummyValueSerializer)
+      .empty[IO, String, Integer](dummyKeySerializer, dummyValueSerializer)
       .withBootstrapServers("localhost:9092")
     assertEquals(settings.bootstrapServers, "localhost:9092")
   }
 
   test("withTopic updates topic") {
     val settings = ScenarioSettings
-      .empty(dummyKeySerializer, dummyValueSerializer)
+      .empty[IO, String, Integer](dummyKeySerializer, dummyValueSerializer)
       .withTopic("test-topic")
     assertEquals(settings.topic, "test-topic")
   }
@@ -36,7 +37,7 @@ class ScenarioSettingsSuite extends FunSuite {
   test("withPhase appends a phase") {
     val phase = Phase(10.second, Rate(2, 1.second))
     val settings = ScenarioSettings
-      .empty(dummyKeySerializer, dummyValueSerializer)
+      .empty[IO, String, Integer](dummyKeySerializer, dummyValueSerializer)
       .withPhase(phase)
     assertEquals(settings.phases, Seq(phase))
   }
@@ -44,7 +45,7 @@ class ScenarioSettingsSuite extends FunSuite {
   test("withPhases appends multiple phases") {
     val phases = Seq(Phase(10.second, Rate(2, 1.second)), Phase(10.second, Rate(2, 1.second)))
     val settings = ScenarioSettings
-      .empty(dummyKeySerializer, dummyValueSerializer)
+      .empty[IO, String, Integer](dummyKeySerializer, dummyValueSerializer)
       .withPhases(phases)
     assertEquals(settings.phases, phases)
   }

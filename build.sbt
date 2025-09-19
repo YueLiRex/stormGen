@@ -15,13 +15,12 @@ lazy val root = (project in file("."))
       http4sServer,
       http4sDsl,
       ce,
-
       munit,
-      ceMunitTest,
+      ceMunitTest
     ),
     Compile / run / fork := true
-  ).enablePlugins(JavaAppPackaging)
-
+  )
+  .enablePlugins(JavaAppPackaging)
 
 lazy val itTest = (project in file("./it-test"))
   .settings(

@@ -1,6 +1,6 @@
 package com.github.stormgen.scenario
 
-import cats.effect.IO
+import cats.effect.Async
 import fs2.Chunk
 import fs2.Pipe
 import fs2.kafka.KafkaProducer
@@ -9,7 +9,10 @@ import fs2.kafka.ProducerResult
 import fs2.kafka.ProducerSettings
 
 object MessageSender {
-  def apply[K, V](topic: String, producerSettings: ProducerSettings[IO, K, V]): Pipe[IO, Seq[(K, V)], ProducerResult[K, V]] =
+  def apply[F[_]: Async, K, V](
+      topic: String,
+      producerSettings: ProducerSettings[F, K, V]
+  ): Pipe[F, Seq[(K, V)], ProducerResult[K, V]] =
     inputStream =>
       inputStream
         .map { messages =>
