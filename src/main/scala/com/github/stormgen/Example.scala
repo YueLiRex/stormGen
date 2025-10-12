@@ -1,10 +1,13 @@
 package com.github.stormgen
 
-import cats.effect.{ ExitCode, IO }
-import com.github.stormgen.scenario.{ Phase, Rate, ScenarioSettings }
-import org.apache.kafka.common.serialization.StringSerializer
-
 import scala.concurrent.duration.DurationInt
+
+import cats.effect.ExitCode
+import cats.effect.IO
+import com.github.stormgen.scenario.Phase
+import com.github.stormgen.scenario.Rate
+import com.github.stormgen.scenario.ScenarioSettings
+import org.apache.kafka.common.serialization.StringSerializer
 
 object Example extends ScenarioRunner {
 

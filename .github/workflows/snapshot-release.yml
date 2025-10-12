@@ -7,9 +7,13 @@ name: Snapshot-Release
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "release" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "release" ]
+
+env:
+  GITHUB_USERNAME: ${{ github.actor }}
+  GITHUB_SECRET: ${{ github.token }}
 
 permissions:
   contents: read
@@ -19,13 +23,25 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+      packages: write
+      attestations: write
+      id-token: write
+
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 11
+    - uses: fregante/setup-git-user@v2
+    - name: Show variable
+      run: echo $GITHUB_SECRET $GITHUB_USERNAME $GITHUB_REPOSITORY ${{ github.repository }}
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '11'
-        distribution: 'temurin'
+        java-version: '21'
+        distribution: 'corretto'
         cache: 'sbt'
+    - uses: sbt/setup-sbt@v1
     - name: Run tests
       run: sbt test
+    - name: Run sbt release
+      run: sbt 'release with-defaults'

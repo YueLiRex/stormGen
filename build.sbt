@@ -18,10 +18,17 @@ lazy val root = (project in file("."))
       awsGlueRegistry,
 //      pureConfig,
 
-      munit % Test,
+      munit       % Test,
       ceMunitTest % Test
     ),
-    Compile / run / fork := true
+    Compile / run / fork := true,
+    credentials += Credentials(
+      "GitHub Package Registry",
+      "maven.pkg.github.com",
+      System.getenv("GITHUB_USERNAME"),
+      System.getenv("GITHUB_SECRET")
+    ),
+    publishTo := Some("GitHub Package Registry" at "https://maven.pkg.github.com/YueLiRex/stormGen")
   )
   .enablePlugins(JavaAppPackaging)
 
