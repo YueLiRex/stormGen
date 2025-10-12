@@ -36,3 +36,12 @@ lazy val itTest = (project in file("./it-test"))
     ),
     Test / fork := true
   )
+
+lazy val example = (project in file("./example"))
+  .settings(
+    name := "stormGen-example",
+    scalaVersion := scalaV,
+    libraryDependencies ++= Seq(
+    ),
+    Test / fork := true
+  )
