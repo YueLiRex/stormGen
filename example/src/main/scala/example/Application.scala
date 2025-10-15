@@ -1,15 +1,15 @@
-package com.github.stormgen
+package example
 
 import scala.concurrent.duration.DurationInt
-
 import cats.effect.ExitCode
 import cats.effect.IO
+import com.github.stormgen.ScenarioRunner
 import com.github.stormgen.scenario.Phase
 import com.github.stormgen.scenario.Rate
 import com.github.stormgen.scenario.ScenarioSettings
 import org.apache.kafka.common.serialization.StringSerializer
 
-object Example extends ScenarioRunner {
+object Application extends ScenarioRunner {
 
   override def run(args: List[String]): IO[ExitCode] =
     for {
@@ -23,3 +23,4 @@ object Example extends ScenarioRunner {
       _ <- fiber.join
     } yield ExitCode.Success
 }
+

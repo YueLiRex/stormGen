@@ -1,9 +1,12 @@
 import Dependencies.*
 
+import java.net.URI
+
 lazy val root = (project in file("."))
   .settings(
     name := "stormGen",
     organization := "com.github",
+    licenses += ("Apache License 2.0", URI.create("https://www.apache.org/licenses/LICENSE-2.0.txt").toURL),
     scalaVersion := scalaV,
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision,
@@ -48,8 +51,10 @@ lazy val example = (project in file("./example"))
   .settings(
     name := "stormGen-example",
     scalaVersion := scalaV,
+    credentials += Credentials(Path.userHome / ".sbt" / ".credentials"),
     resolvers += "GitHub Package Registry" at "https://maven.pkg.github.com/YueLiRex/stormGen",
     libraryDependencies ++= Seq(
+      "com.github" %% "stormgen" % "0.0.2"
     ),
     Compile / run / fork := true,
   )
