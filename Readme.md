@@ -1,8 +1,7 @@
 # StomGen
 ## What is StormGen ?
 
-StomGen is a load test tool for message broker.
-It now only supports Kafka. It will support more message broker in the future. For example Pulsar, Mqtt, RocketMQ, RabbitMQ are planed to support.
+StomGen is a load test tool for message broker. It now only supports Kafka. It will support more message broker in the future. For example Pulsar, Mqtt, RocketMQ are planed to support.
 
 ## Motivation
 
@@ -18,7 +17,3 @@ The project is still in the development.
 Because now the project is still in the development.
 If you want to play with current version, clone the project to your local and look at ExampleScenario.scala
 
-## Recent develop plan (sorted by priority)
-1. Develop stats collector to collect data of generator and generate a html graph report.
-2. Develop build in Scenario. For example Smoke tests, Average-load test, Stress tests, Soak tests, Spike tests, Breakpoint tests.
-3. Make application configurable by yaml file.
