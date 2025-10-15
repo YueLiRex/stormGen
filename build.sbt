@@ -3,6 +3,7 @@ import Dependencies.*
 lazy val root = (project in file("."))
   .settings(
     name := "stormGen",
+    organization := "com.github",
     scalaVersion := scalaV,
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision,
@@ -16,7 +17,6 @@ lazy val root = (project in file("."))
       http4sDsl,
       ce,
       awsGlueRegistry,
-//      pureConfig,
 
       munit       % Test,
       ceMunitTest % Test
@@ -48,7 +48,8 @@ lazy val example = (project in file("./example"))
   .settings(
     name := "stormGen-example",
     scalaVersion := scalaV,
+    resolvers += "GitHub Package Registry" at "https://maven.pkg.github.com/YueLiRex/stormGen",
     libraryDependencies ++= Seq(
     ),
-    Test / fork := true
+    Compile / run / fork := true,
   )
