@@ -8,8 +8,6 @@ name: Snapshot-Release
 on:
   push:
     branches: [ "release" ]
-  pull_request:
-    branches: [ "release" ]
 
 env:
   GITHUB_USERNAME: ${{ github.actor }}
